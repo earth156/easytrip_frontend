@@ -56,10 +56,9 @@ class _GeneratingTripScreenState extends State<GeneratingTripScreen> {
     // Poll every 5 seconds
     _pollingTimer = Timer.periodic(const Duration(seconds: 5), (timer) async {
       try {
-        final response = await _tripController.getTripDetails(widget.tripId);
-        // Backend nests the trip data inside a 'data' key.
-        final tripData = response['data'] as Map<String, dynamic>?;
-
+        // getTripDetails now returns the unwrapped trip object directly,
+        // so we can use it without accessing a 'data' key.
+        final tripData = await _tripController.getTripDetails(widget.tripId);
         if (tripData == null) {
           throw Exception("Invalid response format from server.");
         }

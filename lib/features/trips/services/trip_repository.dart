@@ -99,11 +99,9 @@ class TripRepository {
 
     if (response.statusCode == 200) {
       final body = jsonDecode(utf8.decode(response.bodyBytes));
-      return body
-          as Map<
-            String,
-            dynamic
-          >; // The polling endpoint returns the full object
+      // The backend nests the trip object inside a 'data' key.
+      // We need to extract it before returning for consistency.
+      return body['data'] as Map<String, dynamic>;
     } else {
       try {
         final errorBody = jsonDecode(utf8.decode(response.bodyBytes));
